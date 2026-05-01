@@ -396,7 +396,7 @@
     "dir": "rails",
     "description": "Ruby on Rails (API mode) on Puma, multi-worker with one worker per CPU core.",
     "repo": "https://github.com/rails/rails",
-    "type": "tuned",
+    "type": "production",
     "engine": "puma"
   },
   "ring-http-exchange": {
