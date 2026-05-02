@@ -10,7 +10,7 @@ internal static class Program
         await using var server = new DogriderServer(
             ip: "0.0.0.0",
             port: 8080,
-            reactorCount: Math.Max(1, 16),
+            reactorCount: Math.Max(1, 64),
             handler: new EchoHandler());
 
         server.Start();
