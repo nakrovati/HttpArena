@@ -1,5 +1,7 @@
 FROM trueasync/php-true-async:0.7.0-alpha.3-php8.6-alpine
 
+RUN apk add --no-cache git
+
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /app
