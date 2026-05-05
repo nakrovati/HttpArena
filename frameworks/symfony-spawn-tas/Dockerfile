@@ -30,6 +30,7 @@ upload_max_filesize=32M\n\
 zlib.output_compression_level=6\n\
 zlib.output_compression=On\n" > /etc/php.d/99-benchmark.ini
 
+
 ENV GODEBUG=cgocheck=0
 ENV GOGC=1000
 ENV APP_ENV=prod
