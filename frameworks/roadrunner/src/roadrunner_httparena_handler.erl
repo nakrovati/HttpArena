@@ -62,8 +62,22 @@ handle_route(_, Req) ->
     {roadrunner_resp:not_found(), Req}.
 
 upload_endpoint(Req) ->
-    {ok, Body, Req2} = roadrunner_req:read_body(Req),
-    {roadrunner_resp:text(200, integer_to_binary(byte_size(Body))), Req2}.
+    {Count, Req2} = consume_body(Req, 0),
+    {roadrunner_resp:text(200, integer_to_binary(Count)), Req2}.
+
+%% Stream the request body in 64 KB chunks, discarding each chunk
+%% after counting its bytes via `iolist_size/1` (the auto-buffered body
+%% is `iodata()`, not `binary()`). With `body_buffering => manual` on
+%% the listener, `read_body/2 #{length => 65536}` returns one chunk at
+%% a time so peak memory stays bounded even for the 20 MB upload
+%% validator case.
+consume_body(Req, Acc) ->
+    case roadrunner_req:read_body(Req, #{length => 65536}) of
+        {ok, Bytes, Req2} ->
+            {Acc + iolist_size(Bytes), Req2};
+        {more, Bytes, Req2} ->
+            consume_body(Req2, Acc + iolist_size(Bytes))
+    end.
 
 async_db_endpoint(Req) ->
     Min = qs_int(~"min", Req, 10),

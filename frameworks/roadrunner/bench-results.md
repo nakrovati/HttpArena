@@ -90,7 +90,27 @@ after the streaming fix**. Behind the C / Rust tier (h2o, ringzero,
 rust-epoll, actix, hyper); comparable to high-end Java / C#
 frameworks; well ahead of unoptimized Node / Python.
 
-## After — upload streaming (`body_buffering => manual` + `read_body_chunked/1`)
+## After — upload streaming (`body_buffering => manual` + `read_body/2 #{length}`)
 
-_Filled in once the upload streaming commit lands and a fresh
-`benchmark-lite.sh roadrunner upload` is captured._
+Captured via `bash scripts/benchmark-lite.sh roadrunner upload`, same
+hardware, after the bench-app handler streams via
+`roadrunner_req:read_body(Req, #{length => 65536})` and listeners
+declare `body_buffering => manual`. Roadrunner SHA pinned at
+`a8596b786effa0ad8706548ba0a5a3de0ef6cda3`.
+
+| Run | Throughput | CPU | Mem | Errors |
+|---|---:|---:|---:|---:|
+| 1/3 | 1.4 K | 982 % | 313 MiB | 0 |
+| 2/3 | 1.53 K | 1088 % | 367 MiB | 0 |
+| 3/3 | 1.57 K | 1048 % | 399 MiB | 0 |
+
+**Delta vs auto-mode baseline (749 r/s, 4.1 GiB):** 2.1× throughput,
+**10× less RSS**, status codes 100 % 2xx. The roadrunner-side
+upload-path improvements (`b507415` quadratic-concat fix,
+`a8596b786eff` iodata body) make `body_buffering => auto` viable for
+low-concurrency cases, but at HttpArena's 128c × 20 MB workload only
+the manual streaming path bounds memory.
+
+Leaderboard impact: at the 5× scale extrapolation, ~7.8 K req/s
+would place roadrunner **top-tier on `upload`**, above the prior #1
+candidates (humming-bird 3.2 K, actix 3.1 K).

@@ -15,7 +15,13 @@ start(_StartType, _StartArgs) ->
         routes => Routes,
         middlewares => [roadrunner_compress],
         %% 25 MB headroom for the upload profile (validator goes up to 20 MB).
-        max_content_length => 26214400
+        max_content_length => 26214400,
+        %% Manual body buffering: handlers read the body themselves via
+        %% `roadrunner_req:read_body[_chunked]/1`. Lets the upload handler
+        %% stream chunks instead of buffering the entire 20 MB body in
+        %% the conn process before dispatch. Auto-mode handlers
+        %% (`baseline11` POST) still work transparently via `read_body/1`.
+        body_buffering => manual
     }),
     H2cPort = application:get_env(roadrunner_httparena, h2c_port, 8082),
     {ok, _} = roadrunner:start_listener(httparena_h2c, #{
@@ -23,7 +29,8 @@ start(_StartType, _StartArgs) ->
         routes => Routes,
         middlewares => [roadrunner_compress],
         max_content_length => 26214400,
-        h2c => enabled
+        h2c => enabled,
+        body_buffering => manual
     }),
     case tls_opts() of
         {ok, TlsOpts} ->
@@ -33,7 +40,8 @@ start(_StartType, _StartArgs) ->
                 routes => Routes,
                 middlewares => [roadrunner_compress],
                 max_content_length => 26214400,
-                tls => TlsOpts
+                tls => TlsOpts,
+                body_buffering => manual
             }),
             H2Port = application:get_env(roadrunner_httparena, h2_port, 8443),
             H2TlsOpts = [{alpn_preferred_protocols, [~"h2", ~"http/1.1"]} | TlsOpts],
@@ -42,7 +50,8 @@ start(_StartType, _StartArgs) ->
                 routes => Routes,
                 middlewares => [roadrunner_compress],
                 max_content_length => 26214400,
-                tls => H2TlsOpts
+                tls => H2TlsOpts,
+                body_buffering => manual
             });
         skip ->
             ok
