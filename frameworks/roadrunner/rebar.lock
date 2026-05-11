@@ -3,7 +3,7 @@
  {<<"pooler">>,{pkg,<<"pooler">>,<<"1.6.0">>},0},
  {<<"roadrunner">>,
   {git,"https://github.com/arizona-framework/roadrunner.git",
-       {ref,"5522bddf8916faea6c9f74be2794e5b8d7113c62"}},
+       {ref,"8a29f30b91552bcfe7a6d56d3562700c5bd6cd6b"}},
   0},
  {<<"telemetry">>,
   {git,"https://github.com/beam-telemetry/telemetry.git",

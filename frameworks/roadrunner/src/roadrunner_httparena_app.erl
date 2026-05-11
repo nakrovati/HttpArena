@@ -17,6 +17,14 @@ start(_StartType, _StartArgs) ->
         %% 25 MB headroom for the upload profile (validator goes up to 20 MB).
         max_content_length => 26214400
     }),
+    H2cPort = application:get_env(roadrunner_httparena, h2c_port, 8082),
+    {ok, _} = roadrunner:start_listener(httparena_h2c, #{
+        port => H2cPort,
+        routes => Routes,
+        middlewares => [roadrunner_compress],
+        max_content_length => 26214400,
+        h2c => enabled
+    }),
     case tls_opts() of
         {ok, TlsOpts} ->
             TlsPort = application:get_env(roadrunner_httparena, tls_port, 8081),
