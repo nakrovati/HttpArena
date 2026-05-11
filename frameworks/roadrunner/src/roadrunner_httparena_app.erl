@@ -11,6 +11,7 @@ start(_StartType, _StartArgs) ->
     {ok, _} = roadrunner:start_listener(httparena_http, #{
         port => HttpPort,
         routes => Routes,
+        middlewares => [roadrunner_compress],
         %% 25 MB headroom for the upload profile (validator goes up to 20 MB).
         max_content_length => 26214400
     }),

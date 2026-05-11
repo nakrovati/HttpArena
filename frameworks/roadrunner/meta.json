@@ -9,7 +9,8 @@
   "tests": [
     "baseline",
     "pipelined",
-    "json"
+    "json",
+    "json-comp"
   ],
   "maintainers": ["williamthome"]
 }
