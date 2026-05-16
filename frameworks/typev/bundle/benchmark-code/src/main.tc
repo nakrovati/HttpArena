@@ -1,0 +1,66 @@
+from std.io import println
+from std.socket import tcp_listen, tcp_accept, tcp_read, tcp_write, tcp_close, count_http_terminators
+
+let const RESPONSE: string = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 2\r\nConnection: keep-alive\r\n\r\nok"
+
+let const MAX_DEPTH: uint = 256u
+
+let const READ_BUF: uint = 262144u
+
+fn handle_client(client_fd: int) -> void {
+    let buf: byte[] = []
+    buf.resize(READ_BUF)
+
+    let resp_len: uint = RESPONSE.bytes().length
+    let batch: byte[] = RESPONSE.repeat(MAX_DEPTH).bytes()
+
+    while true {
+        let n = tcp_read(client_fd, buf, READ_BUF)
+        if n <= 0 { break }
+
+        let count = count_http_terminators(buf, n as uint)
+        let reply: uint = if count == 0u => 1u else if count > MAX_DEPTH => MAX_DEPTH else count
+
+        let written = tcp_write(client_fd, batch, reply * resp_len)
+        if written < 0 { break }
+    }
+
+    tcp_close(client_fd)
+}
+
+fn accept_loop(port: uint) -> void {
+    let server = tcp_listen(port, 4096)
+    if server < 0 { return }
+
+    while true {
+        let client = tcp_accept(server)
+        if client >= 0 {
+            spawn handle_client(client)
+        }
+    }
+}
+
+fn main() -> uint {
+    let port: uint = 8080u
+
+    println("typev HttpArena server listening on :8080 (4 SO_REUSEPORT shards)")
+
+    foreach i in 0, 3, 1 {
+        spawn accept_loop(port)
+    }
+
+    let server = tcp_listen(port, 4096)
+    if server < 0 {
+        println("Failed to start server")
+        return 1u
+    }
+
+    while true {
+        let client = tcp_accept(server)
+        if client >= 0 {
+            spawn handle_client(client)
+        }
+    }
+
+    return 0u
+}
