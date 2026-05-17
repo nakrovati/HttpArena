@@ -10,7 +10,6 @@ class Hash
 end
 
 class BenchmarkController < RageController::API
-  SERVER_NAME = 'rage'.freeze
   DATA_DIR = ENV.fetch('DATA_DIR', '/data')
 
   dataset_path = File.join DATA_DIR, 'dataset.json'
@@ -26,10 +25,6 @@ class BenchmarkController < RageController::API
   FileUtils.cp_r(File.join(DATA_DIR, 'static'), File.join(Rage.root, 'public', 'static'))
 
   PG_QUERY = 'SELECT id, name, category, price, quantity, active, tags, rating_score, rating_count FROM items WHERE price BETWEEN $1 AND $2 LIMIT $3'
-
-  before_action do
-    headers["server"] = SERVER_NAME
-  end
 
   def baseline_one
     total = params[:a].to_i + params[:b].to_i
