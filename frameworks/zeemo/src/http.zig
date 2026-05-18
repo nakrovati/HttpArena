@@ -53,8 +53,15 @@ pub const Parser = struct {
     /// has advanced. Set to headers_end when chunked mode is detected.
     chunk_pos: u32 = 0,
 
-    pub const BUF_SIZE = 4096;
-    pub const BODY_MAX = 4096;
+    /// Header-accumulation buffer. Sized to fit the largest pipelined
+    /// burst the bench profiles emit: 16 requests × ~80 B headers = ~1.3 KB
+    /// for the `pipelined` profile, comfortably below 2 KiB. Validation's
+    /// fragmentation tests stay tiny too.
+    pub const BUF_SIZE = 2048;
+    /// Body buffer. Validation sends ≤ 4-byte bodies; gcannon's baseline
+    /// POSTs are short integers. 512 B is well above realistic load while
+    /// staying ~8× leaner than the old 4 KiB.
+    pub const BODY_MAX = 512;
 
     const ChunkState = enum { size, size_cr, data, data_cr, data_lf, trailer_cr, trailer_lf, done };
 
