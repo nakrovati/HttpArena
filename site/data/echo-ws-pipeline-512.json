@@ -133,6 +133,25 @@
     "status_5xx": 0
   },
   {
+    "framework": "roadrunner",
+    "language": "Erlang",
+    "rps": 2094098,
+    "avg_latency": "1.15ms",
+    "p99_latency": "2.54ms",
+    "cpu": "6445.0%",
+    "memory": "184MiB",
+    "connections": 512,
+    "threads": 64,
+    "duration": "5s",
+    "pipeline": 16,
+    "bandwidth": "13.97MB/s",
+    "reconnects": 141984,
+    "status_2xx": 10470494,
+    "status_3xx": 0,
+    "status_4xx": 0,
+    "status_5xx": 0
+  },
+  {
     "framework": "simplew-tuned",
     "language": "C#",
     "rps": 2873477,

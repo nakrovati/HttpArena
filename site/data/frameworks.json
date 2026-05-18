@@ -457,7 +457,7 @@
   },
   "roadrunner": {
     "dir": "roadrunner",
-    "description": "Pure-Erlang HTTP/1.1, HTTP/2, and WebSocket server. Beep beep.",
+    "description": "Roadrunner: pure-Erlang HTTP/1.1 + HTTP/2 + WebSocket server from the Arizona framework.",
     "repo": "https://github.com/arizona-framework/roadrunner",
     "type": "production",
     "engine": "roadrunner"
@@ -645,5 +645,12 @@
     "repo": "https://github.com/c410-f3r/wtx",
     "type": "production",
     "engine": "wtx"
+  },
+  "zeemo": {
+    "dir": "zeemo",
+    "description": "Bare-metal Zig HTTP/1.1 server on io_uring. One reactor process per logical CPU via SO_REUSEPORT, hand-written incremental parser, registered provided-buffer rings.",
+    "repo": "https://github.com/skylightis666/zeemo",
+    "type": "engine",
+    "engine": "io_uring"
   }
 }

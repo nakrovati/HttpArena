@@ -334,6 +334,25 @@
     "status_5xx": 0
   },
   {
+    "framework": "roadrunner",
+    "language": "Erlang",
+    "rps": 483871,
+    "avg_latency": "30.44ms",
+    "p99_latency": "30.44ms",
+    "cpu": "6538.3%",
+    "memory": "504MiB",
+    "connections": 256,
+    "threads": 64,
+    "duration": "5s",
+    "pipeline": 1,
+    "bandwidth": "10.70MB/s",
+    "reconnects": 0,
+    "status_2xx": 2438712,
+    "status_3xx": 0,
+    "status_4xx": 0,
+    "status_5xx": 0
+  },
+  {
     "framework": "spring-boot",
     "language": "Java",
     "rps": 363192,

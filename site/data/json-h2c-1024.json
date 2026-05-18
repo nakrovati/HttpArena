@@ -76,6 +76,25 @@
     "status_5xx": 0
   },
   {
+    "framework": "roadrunner",
+    "language": "Erlang",
+    "rps": 113101,
+    "avg_latency": "41.74ms",
+    "p99_latency": "41.74ms",
+    "cpu": "6525.1%",
+    "memory": "1.5GiB",
+    "connections": 1024,
+    "threads": 64,
+    "duration": "5s",
+    "pipeline": 1,
+    "bandwidth": "387.00MB/s",
+    "reconnects": 0,
+    "status_2xx": 573427,
+    "status_3xx": 0,
+    "status_4xx": 0,
+    "status_5xx": 0
+  },
+  {
     "framework": "wtx",
     "language": "Rust",
     "rps": 599466,
