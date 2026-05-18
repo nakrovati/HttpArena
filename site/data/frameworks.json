@@ -413,6 +413,13 @@
       }
     ]
   },
+  "rack-falcon": {
+    "dir": "rack-falcon",
+    "description": "A high-performance web server for Ruby",
+    "repo": "https://github.com/socketry/falcon",
+    "type": "engine",
+    "engine": "falcon"
+  },
   "rack-iodine": {
     "dir": "rack-iodine",
     "description": "Iodine is a fast concurrent web application for Ruby",
