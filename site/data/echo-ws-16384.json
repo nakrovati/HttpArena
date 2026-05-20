@@ -96,6 +96,25 @@
     "status_5xx": 0
   },
   {
+    "framework": "effinitive",
+    "language": "C#",
+    "rps": 404118,
+    "avg_latency": "11.53ms",
+    "p99_latency": "52.80ms",
+    "cpu": "2517.1%",
+    "memory": "3.2GiB",
+    "connections": 16384,
+    "threads": 64,
+    "duration": "5s",
+    "pipeline": 1,
+    "bandwidth": "2.90MB/s",
+    "reconnects": 0,
+    "status_2xx": 2020592,
+    "status_3xx": 0,
+    "status_4xx": 0,
+    "status_5xx": 0
+  },
+  {
     "framework": "fleck",
     "language": "C#",
     "rps": 1544854,

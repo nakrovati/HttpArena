@@ -150,6 +150,13 @@
     "type": "production",
     "engine": "zerg"
   },
+  "effinitive": {
+    "dir": "effinitive",
+    "description": "Ultra-high-performance custom HTTP server for .NET 10 \u2014 built from scratch for maximum speed.",
+    "repo": "https://github.com/HBartosch/Effinitive",
+    "type": "production",
+    "engine": "effinitive"
+  },
   "elysia": {
     "dir": "elysia",
     "description": "An ergonomic framework for Humans",

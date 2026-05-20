@@ -38,6 +38,25 @@
     "status_5xx": 0
   },
   {
+    "framework": "effinitive",
+    "language": "C#",
+    "rps": 100377,
+    "avg_latency": "39.56ms",
+    "p99_latency": "125.07ms",
+    "cpu": "1950.7%",
+    "memory": "569MiB",
+    "connections": 64,
+    "threads": 64,
+    "duration": "5s",
+    "pipeline": 1,
+    "bandwidth": "1.15MB/s",
+    "reconnects": 0,
+    "status_2xx": 502893,
+    "status_3xx": 0,
+    "status_4xx": 0,
+    "status_5xx": 0
+  },
+  {
     "framework": "frankenphp-trueasync",
     "language": "PHP",
     "rps": 201169,
