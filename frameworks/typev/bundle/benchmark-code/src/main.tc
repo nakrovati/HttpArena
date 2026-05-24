@@ -279,7 +279,9 @@ fn accept_loop() -> void {
 fn main() -> uint {
     println("typev HttpArena server listening on :8080")
 
-    // accept ONLY on spawned loops
+    // Liveness via await: spawn one accept loop awaitable FIRST, rest
+    // fire-and-forget, then block root on it (never returns). main_w parks,
+    // never feeds global. spawn/await non-adjacent to avoid fused PROC_RUN_AWAIT.
     let keepalive = spawn accept_loop()
     foreach i in 0, 2, 1 {
         spawn accept_loop()
