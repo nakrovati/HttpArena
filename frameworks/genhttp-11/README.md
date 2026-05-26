@@ -4,7 +4,7 @@ Lightweight embeddable C# web server using the GenHTTP library on the internal e
 
 ## Stack
 
-- **Language:** C# / .NET 10 (Alpine)
+- **Language:** C# / .NET 10
 - **Framework:** GenHTTP
 - **Engine:** GenHTTP
 - **Build:** Self-contained musl publish, `runtime-deps:10.0-alpine`
