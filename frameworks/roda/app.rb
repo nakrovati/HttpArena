@@ -246,7 +246,7 @@ class App < Roda
   def self.redis
     @redis ||= begin
       return unless ENV['REDIS_URL']
-      max_connections = ENV.fetch('MAX_THREADS', 4).to_i
+      max_connections = ENV.fetch('MAX_THREADS', 4).to_i + ENV.fetch("MAX_IO_THREADS", 10).to_i
       ConnectionPool::Wrapper.new(size: max_connections, timeout: 10) do
         Redis.new(url: ENV['REDIS_URL'])
       end
