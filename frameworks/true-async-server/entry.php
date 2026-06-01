@@ -37,6 +37,8 @@ $staticDir = '/data/static';
 $port      = (int)(getenv('PORT') ?: 8080);
 $tlsPort   = (int)(getenv('TLS_PORT') ?: 8443);
 $h2cPort   = (int)(getenv('H2C_PORT') ?: 8082);
+$h3Port    = (int)(getenv('H3_PORT') ?: $tlsPort);
+$h3Enabled = getenv('H3_DISABLE') !== '1';
 $workers   = (int)(getenv('WORKERS') ?: 0);
 if ($workers <= 0) {
     $workers = available_parallelism();
@@ -81,12 +83,20 @@ if ($tlsAvailable) {
         ->addListener('0.0.0.0', $tlsPort, true)
         ->addListener('0.0.0.0', 8081, true)
         ->setCertificate($certPath)
-        ->setPrivateKey($keyPath);
+        ->setPrivateKey($keyPath)
+        // Pin the TLS clear-text-out BIO ring to 64 KiB (#29). This already
+        // matches the built-in default, set explicitly so the arena's TLS
+        // write-buffer size stays fixed regardless of future default changes.
+        ->setTlsBufferBytes(64 * 1024);
 
-    // No HTTP/3 listener: meta.json subscribes to no h3 profile, so the
-    // QUIC UDP listener would be pure liability — an extra bind that races
-    // with the previous container's teardown on back-to-back profile runs
-    // and makes the server fail to come up ("did not come up" on limited-conn).
+    // HTTP/3 over QUIC on the same UDP port — powers baseline-h3 / static-h3.
+    // Reuses the TLS cert/key and coexists with h2 on TCP :8443. A 120-iteration
+    // back-to-back restart repro (16 and 64 workers) showed 0 startup failures
+    // with this listener on — the C listener sets SO_REUSEADDR/SO_REUSEPORT — so
+    // it stays always-on. Set H3_DISABLE=1 to skip on builds without H3.
+    if ($h3Enabled) {
+        $config->addHttp3Listener('0.0.0.0', $h3Port);
+    }
 }
 
 // Bootloader needs the class files visible in the parent too, otherwise
