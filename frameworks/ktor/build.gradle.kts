@@ -23,9 +23,13 @@ dependencies {
     implementation(ktorLibs.server.defaultHeaders)
     implementation(ktorLibs.server.contentNegotiation)
     implementation(ktorLibs.serialization.kotlinx.json)
-    implementation(libs.xerial.sqlite.jdbc)
+
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.r2dbc)
+    implementation(libs.exposed.json)
+//    implementation(libs.xerial.sqlite.jdbc)
     implementation(libs.postgresql)
-    implementation(libs.zaxxer.hikari.cp)
+//    implementation(libs.zaxxer.hikari.cp)
     implementation(libs.logback.classic)
 }
 
