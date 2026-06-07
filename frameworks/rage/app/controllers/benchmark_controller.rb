@@ -27,7 +27,7 @@ class BenchmarkController < ApplicationController
   def baseline_one
     total = params[:a].to_i + params[:b].to_i
     if request.post?
-      rack_input = request.send(:rack_request).env["rack.input"]
+      rack_input = request.send(:rack_request).env[Rack::RACK_INPUT]
       rack_input.rewind
       body_str = rack_input.read.strip
       total += body_str.to_i
@@ -80,7 +80,7 @@ class BenchmarkController < ApplicationController
   end
 
   def upload
-    rack_input = request.send(:rack_request).env["rack.input"]
+    rack_input = request.send(:rack_request).env[Rack::RACK_INPUT]
     rack_input.rewind
     size = 0
     while (chunk = rack_input.read(65536))
